@@ -1,0 +1,24 @@
+import pandas as pd
+from functools import reduce
+product_titles = [
+    "The Cravings Place Chocolate Chunk Cookie Mix, 23-Ounce Bags (Pack of 6)",
+    "Mauna Loa Macadamias, 11 Ounce Packages",
+    "Organic Matcha Green Tea Powder - 100% Pure Matcha (No Sugar Added - Unsweetened Pure Green Tea - No Coloring Added Like Others) 4oz",]
+main_keywords = [
+    "Chocolate",
+    "Cravings",
+    "Pure",
+    "Green Tea",]
+def mapper(row):
+    product_title = row.strip()
+    counts = {keyword: product_title.lower().count(keyword.lower()) for keyword in main_keywords}
+    return (product_title, counts)
+mapped_data = list(map(mapper, product_titles))
+def reducer(acc, current):
+    key, value = current
+    acc[key] = value
+    return acc
+result = reduce(reducer, mapped_data, {})
+for key, value in result.items():
+    print(f"{key}: Count={value}")
+    
